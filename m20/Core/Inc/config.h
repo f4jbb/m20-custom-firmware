@@ -27,7 +27,7 @@
 // =========================================================================
 // CONFIGURATION HORUS BINARY (DESACTIVE)
 // =========================================================================
-#define HORUS_ENABLE 0                  // 0 = désactivé | 2 = Horus V2 | 3 = Horus V3
+#define HORUS_ENABLE 0                  // Désactivé pour consacrer 100% des émissions à l'APRS
 #define HORUS_V2_PAYLOAD_ID 256         // Obligatoire même si HORUS_ENABLE = 0
 #define HORUS_V3_PAYLOAD_CALLSIGN "F4JBB"
 #define QRG_FSK4 {437600000}
@@ -44,8 +44,8 @@
 #define APRS_DESTINATION "APZM20"       // Obligatoire (6 caractères max)
 #define APRS_DESTINATION_SSID 0         // Obligatoire
 #define APRS_PATH "WIDE2"               // Obligatoire (max 6 caractères)
-#define APRS_PATH_SSID 0                // 0 = pas de répétition digipeater (reste local)
-#define APRS_SYMBOL "/-"                // Symbole validé à la compilation
+#define APRS_PATH_SSID 1                // OBLIGATOIRE >= 1 (WIDE2-1, sinon échec assert compilation)
+#define APRS_SYMBOL "/-"                // 2 caractères exacts ("/-" = Maison, "/O" = Ballon)
 #define APRS_COMMENT_TELEMETRY 0        // 0 = trame courte (plus rapide à relever en gonio)
 #define APRS_COMMENT_TEXT "Renard M20 F4JBB"
 #define QRG_AFSK {432500000}            // Fréquence APRS UHF officielle (432,500 MHz)
@@ -57,8 +57,8 @@
 #define TIME_PERIOD 5                   // Émission toutes les 5 s
 #define RF_BOOST 0                      // 0 = atténué (~15dB) pour éviter la saturation proche
 
-#define LPS22_ENABLE 1                  // Gardé à 1 pour éviter une erreur de compilation
-#define NTC_ENABLE 1                    // Gardé à 1 pour éviter une erreur de compilation
+#define LPS22_ENABLE 1                  // Capteur pression/température interne
+#define NTC_ENABLE 1                    // Sonde température externe
 #define BAT_ADC_ENABLE 1                // Mesure tension batterie
 #define PV_ADC_ENABLE 0                 // ADC externe PA0
 #define PV_ADC_R1 1

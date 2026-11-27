@@ -4,70 +4,63 @@
 // =========================================================================
 // CONFIGURATION MATERIELLE DE LA SONDE M20
 // =========================================================================
-#define GPS_TYPE 1                  // 1 = u-blox MAX-M10 (compatible 0.10) | 2 = XM1110
-#define GPS_WATCHDOG 1              // 1 = activé | 0 = désactivé
-#define GPS_WATCHDOG_ARC 10         // Nombre de boucles sans fix avant redémarrage GPS
-#define AscentRateTime 5            // Temps de calcul vitesse verticale (s)
+// 1 = u-blox MAX-M10M (sondes récentes / 0.10) | 2 = XM1110 (anciennes sondes)
+#define GPS_TYPE 1
 
-#define ADF_FREQ_CORRECTION 0       // Correction fréquence quartz (pas de 244 Hz)
-#define ADF_FSK_DEVIATION 12        // Déviation AFSK (ne pas modifier)
-#define ADF_PPS_CORRECTION_ENABLE 0 // 1 = correction via 1PPS (modif matérielle requise)
+// Correction de fréquence du quartz en pas (~100-200 Hz) si décalage constaté
+#define ADF_FREQ_CORRECTION 0
 
-// =========================================================================
-// GESTION DE LA LED
-// =========================================================================
-#define LED_MODE 0                  // 0 = éteinte | 1 = avant TX | 2 = état fix GPS
-#define LED_PERIOD 5000
-#define LED_DISABLE_ALT 1500
-#define LED_MODE_2_BLINK_TIME 100
-#define LED_MODE_2_BLINK_PAUSE 200
+// Mode de la LED : 0 = éteinte (discrétion renard) | 1 = recherche GPS | 2 = active
+#define LED_MODE 0
 
 // =========================================================================
-// CONFIGURATION HORUS BINARY (4-FSK)
+// CONFIGURATION HORUS BINARY (Télémétrie longue portée 4-FSK)
 // =========================================================================
-#define HORUS_ENABLE 0              // 0 = désactivé | 2 = Horus V2 | 3 = Horus V3
-#define HORUS_V2_PAYLOAD_ID 256     // Obligatoire même si HORUS_ENABLE = 0
+// 0 = désactivé (100% APRS pour la chasse au renard)
+#define HORUS_ENABLE 0
+
+// Votre indicatif radioamateur pour Horus V3
 #define HORUS_V3_PAYLOAD_CALLSIGN "F4JBB"
+
+// Fréquence(s) d'émission Horus en Hz (ex: 437.600 MHz)
 #define QRG_FSK4 {437600000}
+
+// Puissance d'émission Horus (8 = ~5mW à 63 = ~130mW avec RF_BOOST)
 #define FSK4_POWER 25
-#define FSK4_WAIT_TIME 500
-#define TX_PAUSE 500
 
 // =========================================================================
 // CONFIGURATION APRS (AFSK 1200 bauds)
 // =========================================================================
+// 1 = activé | 0 = désactivé
 #define APRS_ENABLE 1
-#define APRS_CALLSIGN "F4JBB"       // 6 caractères max
-#define APRS_SSID 7                 // 11 = ballon, 7 = portable/gonio
-#define APRS_DESTINATION "APZM20"   // Obligatoire (6 caractères max)
-#define APRS_DESTINATION_SSID 0     // Obligatoire
-#define APRS_PATH "WIDE2"           // Obligatoire (max 6 caractères)
-#define APRS_PATH_SSID 0            // 0 = pas de répétition digipeater
-#define APRS_SYMBOL "/-"            // Chaîne de 2 caractères ("/-" = Maison, "/O" = Ballon)
-#define APRS_COMMENT_TELEMETRY 0    // 0 = désactivé (recommandé pour la chasse au renard)
-#define APRS_COMMENT_TEXT "Chasse au renard M20 F4JBB"
 
-#define QRG_AFSK {432500000}        // Fréquence APRS UHF officielle (432,500 MHz)
-#define AFSK_POWER 30               // Puissance moyenne (0 à 63) idéale en extérieur
+// Votre indicatif (6 caractères max) et SSID (7 = portable/gonio)
+#define APRS_CALLSIGN "F4JBB"
+#define APRS_SSID 7
 
-// =========================================================================
-// CADENCE, PUISSANCE ET CAPTEURS
-// =========================================================================
-#define TIME_PERIOD 4               // Intervalle en secondes (minimum 4)
-#define RF_BOOST 0                  // 0 = désactivé (~15dB d'atténuation) | 1 = activé
+// Symbole APRS ('O' = Ballon, '>' = Voiture, '-' = Maison/Station fixe)
+#define APRS_SYMBOL '-'
 
-#define LPS22_ENABLE 1              // Capteur pression/température interne
-#define NTC_ENABLE 1                // Sonde température externe
-#define BAT_ADC_ENABLE 1            // Mesure tension batterie
-#define PV_ADC_ENABLE 0             // ADC externe PA0
-#define PV_ADC_R1 1
-#define PV_ADC_R2 2
+// Chemin de répétition APRS ("WIDE1-1" pour portée locale sans saturer le réseau)
+#define APRS_PATH "WIDE1-1"
+
+// Commentaire transmis dans la trame APRS
+#define APRS_COMMENT "Chasse au renard M20 F4JBB"
+
+// Fréquence APRS UHF en Hz (432.500 MHz standard en Europe)
+#define QRG_AFSK {432500000}
+
+// Puissance d'émission APRS (8 à 63)
+#define AFSK_POWER 25
 
 // =========================================================================
-// DEBUG UART
+// CADENCE ET GESTION D'ENERGIE
 // =========================================================================
-#define DEBUG 0
-#define GPS_DEBUG 0
-#define GPS_RAW_DEBUG 0
+// Intervalle en secondes entre deux émissions (minimum 4 secondes)
+#define TIME_PERIOD 4
+
+// Amplification RF (0 = désactivé / atténué pour éviter la saturation proche)
+#define RF_BOOST 0
 
 #endif /* INC_CONFIG_H_ */
+

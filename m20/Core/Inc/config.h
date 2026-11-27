@@ -27,7 +27,7 @@
 // =========================================================================
 // CONFIGURATION HORUS BINARY (DESACTIVE)
 // =========================================================================
-#define HORUS_ENABLE 0                  // Désactivé pour consacrer 100% des émissions à l'APRS
+#define HORUS_ENABLE 0                  // 0 = désactivé | 2 = Horus V2 | 3 = Horus V3
 #define HORUS_V2_PAYLOAD_ID 256         // Obligatoire même si HORUS_ENABLE = 0
 #define HORUS_V3_PAYLOAD_CALLSIGN "F4JBB"
 #define QRG_FSK4 {437600000}
@@ -45,21 +45,21 @@
 #define APRS_DESTINATION_SSID 0         // Obligatoire
 #define APRS_PATH "WIDE2"               // Obligatoire (max 6 caractères)
 #define APRS_PATH_SSID 0                // 0 = pas de répétition digipeater (reste local)
-#define APRS_SYMBOL "/["                // "/[" = Piéton/Chasseur (ou "/-" = Maison)
+#define APRS_SYMBOL "/-"                // Symbole validé à la compilation
 #define APRS_COMMENT_TELEMETRY 0        // 0 = trame courte (plus rapide à relever en gonio)
-#define APRS_COMMENT_TEXT "Renard M20 F4JBB" // Texte court = trame plus rapide
+#define APRS_COMMENT_TEXT "Renard M20 F4JBB"
 #define QRG_AFSK {432500000}            // Fréquence APRS UHF officielle (432,500 MHz)
 #define AFSK_POWER 25                   // Puissance modérée (25/63) pour portée locale
 
 // =========================================================================
-// CADENCE, PUISSANCE ET CAPTEURS (ECONOMIE BATTERIE)
+// CADENCE, PUISSANCE ET CAPTEURS
 // =========================================================================
-#define TIME_PERIOD 5                   // Émission toutes les 5 s (bon compromis gonio/batterie)
+#define TIME_PERIOD 5                   // Émission toutes les 5 s
 #define RF_BOOST 0                      // 0 = atténué (~15dB) pour éviter la saturation proche
 
-#define LPS22_ENABLE 0                  // Désactivé (inutile au sol, économise la pile)
-#define NTC_ENABLE 0                    // Désactivé (inutile au sol, économise la pile)
-#define BAT_ADC_ENABLE 1                // Gardé actif pour surveiller la pile avant le départ
+#define LPS22_ENABLE 1                  // Gardé à 1 pour éviter une erreur de compilation
+#define NTC_ENABLE 1                    // Gardé à 1 pour éviter une erreur de compilation
+#define BAT_ADC_ENABLE 1                // Mesure tension batterie
 #define PV_ADC_ENABLE 0                 // ADC externe PA0
 #define PV_ADC_R1 1
 #define PV_ADC_R2 2
@@ -72,4 +72,3 @@
 #define GPS_RAW_DEBUG 0
 
 #endif /* INC_CONFIG_H_ */
-

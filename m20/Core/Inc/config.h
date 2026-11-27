@@ -1,107 +1,73 @@
-/*   MAIN CONFIG FILE FOR THIS PROJECT   */
-
-
 #ifndef INC_CONFIG_H_
 #define INC_CONFIG_H_
 
-/*-----------------------------------------------------------------*/
-//  Sonde configuration, parameters that should be changed
+// =========================================================================
+// CONFIGURATION MATERIELLE DE LA SONDE M20
+// =========================================================================
+// 1 = u-blox MAX-M10M (sondes récentes) | 2 = XM1110 (anciennes sondes)
+#define GPS_TYPE 1
 
-#define TIME_PERIOD 12 // Time betwen starts of transmissions (in seconds) (must be more than 4+TX_PAUSE)
+// Correction de fréquence du quartz en pas (~100-200 Hz) si décalage constaté
+#define ADF_FREQ_CORRECTION 0
 
-// Horus Binary 4FSK mode (V2 or V3)
-#define HORUS_ENABLE 3 // 0 - disabled, 2 - V2, 3 - V3
+// Mode de la LED : 0 = éteinte | 1 = recherche GPS uniquement | 2 = toujours active
+// Mis à 0 pour plus de discrétion lors de la recherche finale et économiser la pile
+#define LED_MODE 0
 
-const static float QRG_FSK4[] = {
-    435100000};       // 4FSK transmitted frequencies array, switched in a loop, add new frequencies (in Hz) after a comma in braces. Commonly used
-                      // frequencies: https://github.com/projecthorus/horusdemodlib/wiki#commonly-used-frequencies
-#define FSK4_POWER 30 // RF power setting for horus transmission values 0-63
+// =========================================================================
+// CONFIGURATION HORUS BINARY (Télémétrie longue portée 4-FSK)
+// =========================================================================
+// 0 = désactivé | 2 = Horus V2 | 3 = Horus V3 (recommandé avec indicatif)
+// Désactivé (0) pour concentrer l'émission sur l'APRS et éviter les interférences
+#define HORUS_ENABLE 0
 
-#define HORUS_V2_PAYLOAD_ID                                                                                                                          \
-	256 // Sonde payload ID 256 - for 4FSKTEST-V2, change this for real flight, refer to
-	    // https://github.com/projecthorus/horusdemodlib/wiki#how-do-i-transmit-it
+// Votre indicatif radioamateur pour Horus V3
+#define HORUS_V3_PAYLOAD_CALLSIGN "F4JBB"
 
-#define HORUS_V3_PAYLOAD_CALLSIGN                                                                                                                    \
-	"4FSKTEST-V3" // Sonde payload callsing, 1 to 15 characters : a-z,A-Z,0-9,-, note that the longer it is, the longer the frame will be.
+// Fréquence(s) d'émission Horus en Hz (ex: 437.600 MHz)
+#define QRG_FSK4 {437600000}
 
-#define FSK4_WAIT_TIME 0 // Time in ms of constant TX freq before actual modulation
+// Puissance d'émission Horus (8 = ~5mW à 63 = ~130mW avec RF_BOOST)
+#define FSK4_POWER 25
 
-#define TX_PAUSE 500 // Delay between HORUS and APRS
-
-// APRS (AX.25 AFSK HDLC Bell 202)
+// =========================================================================
+// CONFIGURATION APRS (AFSK 1200 bauds)
+// =========================================================================
+// 1 = activé | 0 = désactivé
 #define APRS_ENABLE 1
 
-const static float QRG_AFSK[] = {
-    435100000};               // AFSK transmitted frequencies array, switched in a loop, add new frequencies (in Hz) after a comma in braces.
-#define AFSK_POWER FSK4_POWER // RF power setting AFSK transmission values 0-63
+// Votre indicatif (6 caractères max) et SSID (11 = ballon, 7 ou 9 = test au sol)
+#define APRS_CALLSIGN "F4JBB"
+#define APRS_SSID 7
 
-#define APRS_CALLSIGN "NOCALL" // Sonde callsign, max 6 digits, change this for your callsign for real flight
-#define APRS_SSID 11           // Sonde SSID, 11 is "balloons, aircraft, spacecraft, etc", refer to https://www.aprs.org/aprs11/SSIDs.txt
+// Symbole APRS ('O' = Ballon, '>' = Voiture, '-' = Maison/Station fixe)
+#define APRS_SYMBOL '-'
 
-#define APRS_DESTINATION "APRM20" // Destination adress, characterizing a M20 transmitter, max 6 digits
-#define APRS_DESTINATION_SSID 0   // Default 0 SSID
+// Chemin de répétition APRS ("WIDE2-1" en vol, "WIDE1-1,WIDE2-1" au sol)
+// Mis à "" (vide) pour éviter d'inonder les digipeaters locaux avec des trames rapides
+#define APRS_PATH ""
 
-#define APRS_PATH "WIDE2" // Path, max 6 digits according to https://www.aprs.org/balloons.html
-#define APRS_PATH_SSID 1  // Path SSID
+// Commentaire transmis dans la trame APRS
+#define APRS_COMMENT "Chasse au renard M20 F4JBB"
 
-#define APRS_TIMESTAMP 0 // Disable APRS timestanp sending by default, it has some werid issues on the map.
+// Fréquence APRS UHF en Hz (432.500 MHz standard en Europe)
+// Note : En France, la bande 433.400 - 433.600 MHz est souvent utilisée pour la gonio UHF
+#define QRG_AFSK {432500000}
 
-#define APRS_SYMBOL "/O" // baloon symbol, all symbols: https://www.aprs.org/symbols.html, needs to be /O for showing on Sondehub
+// Puissance d'émission APRS (8 à 63)
+// Réduite à 15 (~15-20mW) pour éviter de saturer les récepteurs à courte distance
+#define AFSK_POWER 15
 
-#define APRS_COMMENT_TELEMETRY 1 // Telemetry in coment field
+// =========================================================================
+// CADENCE ET GESTION D'ENERGIE
+// =========================================================================
+// Intervalle en secondes entre deux émissions (minimum 4 secondes)
+// Cadence rapide (4s) pour faciliter le relèvement à l'antenne directive
+#define TIME_PERIOD 4
 
-#define APRS_COMMENT_TEXT_ENABLE 1
-#define APRS_COMMENT_TEXT "M20 radiosonde test" // Additional text in comment field
-
-// LED settings
-#define LED_MODE 2                 // 0 - disabled, 1 - flashes when prepairing tx data before transmit, 2 - GPS fix indication
-#define LED_TIMER_PERIOD 150       // time between LED lighting
-#define LED_PERIOD 10               // time between LED lighting
-#define LED_DISABLE_ALT 1500       // disable led when certain altitude is reached, 0 for always enable
-#define LED_RE_EANBLE 0		// re enable led after getting below certain altitude
-
-// Radio settings
-#define RF_BOOST 1 // RF booster enabled for transmissions about 15dB gain, but more power consumed - normally should be ON(1).
-
-#define ADF_PPS_CORRECTION_ENABLE 0 // Enable radio module frequency correction based on 1 PPS signal from GPS module. Requires wiring the 1PPS pin of GPS module to PB2.
-#define ADF_PPS_CORRECTION_REQUIRE_FIX 1 // Require GPS lock for making GPS corrections
-#define ADF_PPS_DEFAULT_FALLBACK 0 // when fix is lost or max correction value is exceded fallback to the default static inital correction
-#define ADF_MAX_PPS_CORRECTION 5000 // Max correction bounds, ignores PPS data when it is exceded
-#define ADF_FREQ_INITIAL_CORRECTION 20 // initial correction of frequency from crystal inaccuracy in 244Hz steps. To be individually set for each sonde.
-#define ADF_FREQ_CORRECTION 4 // correction added after the GPS PPS fix
-
-#define ADF_FSK_DEVIATION 5    // Deviation parameter used in AFSK modem, don't change it without a reason, 5= about 5k5Hz, 10=11kHz
-
-// GPS configuration
-#define GPS_TYPE 1 // Type of GPS module: 1 - u-blox | 2 - XM1110
-
-#define GPS_WATCHDOG 1 // Enable GPS watchdog
-#define GPS_WATCHDOG_ARC                                                                                                                             \
-	180 // Time of GPS watchdog after restart counter, how much time (in s) the module has for getting a fix after a restart before next one
-// #define GPS_WATCHDOG_MAX_D_TIME 10 // Max GPS time deviation (in s) from last frame
-// #define GPS_WATCHDOG_ASCENTRATE 100 // Ascent rate value triggering restart
-
-#define AscentRateTime TIME_PERIOD / 2 // Time of ascent rate mesure
-
-#define LPS22_ENABLE 1
-
-#define NTC_ENABLE 1
-
-#define BAT_ADC_ENABLE 1
-
-// PV / payload voltage ADC
-#define PV_ADC_ENABLE 0
-#define PV_ADC_R1 1 // Resistor value in ohm from measurement target to PA0
-#define PV_ADC_R2 2 // Resistor value in ohm from PA0 to ground
-// These values should have zeros removed if possible, e.g. for resistors R1=1000ohm and R2=2000ohm PV_ADC_R1 = 1 and PV_ADC_R2 = 2.
-
-#define IWDG_ENABLE 1
-
-// Debug
-#define DEBUG 0
-
-#define GPS_DEBUG 0
-
-#define GPS_RAW_DEBUG 0
+// Amplification RF (1 = activé jusqu'à 130mW | 0 = désactivé)
+// Désactivé (0) pour limiter la puissance et augmenter l'autonomie
+#define RF_BOOST 0
 
 #endif /* INC_CONFIG_H_ */
+

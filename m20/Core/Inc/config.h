@@ -45,7 +45,7 @@
 #define APRS_DESTINATION_SSID 0         // Obligatoire
 #define APRS_PATH "WIDE2"               // Obligatoire (max 6 caractères)
 #define APRS_PATH_SSID 0                // 0 = pas de répétition digipeater (reste local)
-#define APRS_SYMBOL "/'"                // "/'" = Cible/Avion léger (ou "/-" pour Maison)
+#define APRS_SYMBOL "/["                // "/[" = Piéton/Chasseur (ou "/-" = Maison)
 #define APRS_COMMENT_TELEMETRY 0        // 0 = trame courte (plus rapide à relever en gonio)
 #define APRS_COMMENT_TEXT "Renard M20 F4JBB" // Texte court = trame plus rapide
 #define QRG_AFSK {432500000}            // Fréquence APRS UHF officielle (432,500 MHz)
@@ -72,3 +72,4 @@
 #define GPS_RAW_DEBUG 0
 
 #endif /* INC_CONFIG_H_ */
+
